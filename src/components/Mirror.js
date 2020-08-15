@@ -24,35 +24,39 @@ const VideoRef = styled.video`
   transform: translate(-50%,-50%) scaleX(-1);
 `
 
+const isBrowser = typeof window !== 'undefined'
+
 const Mirror = () => {
   const videoRef = useRef()
   const [error, setError] = useState(false)
   const [permissionGranted, setPermissionGranted] = useState(false)
-  const supportsMedia = 'mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices
+  const supportsMedia = isBrowser && 'mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices
   const askForCameraPermission = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({video: {
-        facingMode: { exact: 'user' }
-      }})
-      videoRef.current.srcObject = stream
-      videoRef.current.play()
-      setPermissionGranted(true)
-      if(error){
-        setError(false)
+    if(isBrowser){
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({video: {
+          facingMode: { exact: 'user' }
+        }})
+        videoRef.current.srcObject = stream
+        videoRef.current.play()
+        setPermissionGranted(true)
+        if(error){
+            setError(false)
+        }
       }
-    }
-    catch(e) {
-      setError(true)
+      catch(e) {
+        setError(true)
+      }
     }
   }
 
   return (
-      <MirrorContainer>
-        {!supportsMedia && <span>Your device doesn't support camera.</span>}
-        {!permissionGranted && <Button onClick={askForCameraPermission}>Start Mirror</Button>}
-        {error && <span>Something went wrong. <br/> Please allow permissions and make sure front camera is working.</span>}
-        <VideoRef ref={videoRef} show={permissionGranted} />
-      </MirrorContainer>
+    <MirrorContainer>
+      {!supportsMedia && <span>Your device doesn't support camera.</span>}
+      {!permissionGranted && <Button onClick={askForCameraPermission}>Start Mirror</Button>}
+      {error && <span>Something went wrong. <br/> Please allow permissions and make sure front camera is working.</span>}
+      <VideoRef ref={videoRef} show={permissionGranted} />
+    </MirrorContainer>
   )
 }
 
