@@ -8,6 +8,7 @@ const MirrorContainer = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
+  overflow-y: hidden;
 `
 
 const VideoRef = styled.video`
@@ -17,11 +18,8 @@ const VideoRef = styled.video`
 
   width: 100%;
   height: 100%;
- 
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%) scaleX(-1);
+
+  transform: scaleX(-2.5) scaleY(2.5);
 `
 
 const isBrowser = typeof window !== 'undefined'
