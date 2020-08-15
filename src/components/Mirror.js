@@ -15,8 +15,8 @@ const VideoRef = styled.video`
   min-width: 100%;
   min-height: 100%;
 
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
  
   position: relative;
   top: 50%;
@@ -28,9 +28,7 @@ const isBrowser = typeof window !== 'undefined'
 
 const Mirror = () => {
   const videoRef = useRef()
-  const [error, setError] = useState(false)
   const [permissionGranted, setPermissionGranted] = useState(false)
-  const supportsMedia = isBrowser && 'mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices
   const askForCameraPermission = async () => {
     if(isBrowser){
       try {
@@ -40,21 +38,16 @@ const Mirror = () => {
         videoRef.current.srcObject = stream
         videoRef.current.play()
         setPermissionGranted(true)
-        if(error){
-            setError(false)
-        }
       }
-      catch(e) {
-        setError(true)
+      catch(e){
+        alert('Something went wrong. Please check permissions and make sure you have a working front camera.')
       }
     }
   }
 
   return (
     <MirrorContainer>
-      {!supportsMedia && <span>Your device doesn't support camera.</span>}
-      {!permissionGranted && <Button onClick={askForCameraPermission}>Start Mirror</Button>}
-      {error && <span>Something went wrong. <br/> Please allow permissions and make sure front camera is working.</span>}
+      {!permissionGranted && <Button onClick={askForCameraPermission}>Click here to enable mirror</Button>}
       <VideoRef ref={videoRef} show={permissionGranted} />
     </MirrorContainer>
   )

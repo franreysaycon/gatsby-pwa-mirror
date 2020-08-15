@@ -13,7 +13,7 @@ module.exports = {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `FSAYCON.DEV Gatsby Mirror PWA`,
-        short_name: `starter`,
+        short_name:  `See your Face`,
         start_url: `/`,
         background_color: `#663399`,
         theme_color: `#663399`,
